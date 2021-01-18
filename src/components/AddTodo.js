@@ -1,36 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from '../business/state-reducer';
+import { addTodo } from '../redux/reducers';
 
-class AddTodo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { input: '' };
-  }
+let AddTodo = (props) => {
+  let [todo, setTodo] = useState('');
 
-  updateInput = (input) => {
-    this.setState({ input });
+  let changeTodoName = (e) => {
+    setTodo((todo = e.target.value));
   };
 
-  handleAddTodo = () => {
-    debugger;
-    this.props.addTodo(this.state.input);
-    this.setState({ input: '' });
+  let addNewTodo = () => {
+    props.addTodo(todo);
+    setTodo((todo = ''));
   };
 
-  render() {
-    return (
-      <div>
-        <form>
-          <input
-            value={this.state.input}
-            onChange={(e) => this.updateInput(e.target.value)}
-          />
-          <button onClick={this.handleAddTodo}>Add</button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="form-add-todo">
+      <input
+        value={todo}
+        onChange={changeTodoName}
+        className="input-add-todo"
+      />
+      <button onClick={addNewTodo} className="button-add-todo">
+        Add
+      </button>
+    </div>
+  );
+};
 
-export default connect(null, { addTodo })(AddTodo);
+let mapStateToProps = (state) => ({
+  changeText: state.todoReducer.changeText,
+});
+
+export default connect(mapStateToProps, { addTodo })(AddTodo);
