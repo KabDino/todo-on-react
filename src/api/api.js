@@ -21,4 +21,15 @@ export const todoAPI = {
   changeCompleted(id, completed) {
     return db.collection('todo').doc(id).update({ completed: !completed });
   },
+
+  changeOrder(todoList) {
+    return new Promise(() => {
+      todoList.map((item) => {
+        return db
+          .collection('todo')
+          .doc(String(item.id))
+          .update({ order: item.order });
+      });
+    });
+  },
 };

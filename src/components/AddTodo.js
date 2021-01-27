@@ -10,7 +10,7 @@ let AddTodo = (props) => {
   };
 
   let addNewTodo = () => {
-    props.addTodo(todo);
+    props.addTodo(todo, props.length);
     setTodo((todo = ''));
   };
 
@@ -29,7 +29,7 @@ let AddTodo = (props) => {
 };
 
 let mapStateToProps = (state) => ({
-  changeText: state.todoReducer.changeText,
+  length: state.todoReducer.todoList.length,
 });
 
 export default connect(mapStateToProps, { addTodo })(AddTodo);

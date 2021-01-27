@@ -9,6 +9,11 @@ const TodoItem = (props) => {
 
   let updateNameTodo = () => {
     props.updateNameTodo(props.todoId, updatingTodo);
+    setUpdatingTodo((updatingTodo = ''));
+  };
+
+  let deleteChangeNameTodo = () => {
+    setUpdatingTodo((updatingTodo = ''));
   };
 
   let changeCompleted = () => {
@@ -21,20 +26,21 @@ const TodoItem = (props) => {
 
   return (
     <div
+      key={props.todoId}
       todo-id={props.todoId}
       className={
         props.completed === true ? 'todo-item completed' : 'todo-item'
       }>
-      
       <div className="todoTitle">
         <div onClick={changeCompleted} className="todo-marker" />
         <input
-          defaultValue={props.name}
+          defaultValue={updatingTodo !== '' ? updatingTodo : props.name}
           onChange={changeTodoName}
+          onBlur={deleteChangeNameTodo}
           className="nameTodo"
         />
       </div>
-      
+
       <div onClick={updateNameTodo} className="button-update-todo">
         &#x270E;
       </div>

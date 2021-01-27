@@ -6,6 +6,7 @@ const DELETE_TODO = 'DELETE_TODO';
 const SET_TODOS = 'SET_TODOS';
 const IS_FETCHING = 'IS_FETCHING';
 const UPDATE_NAME_TODO = 'UPDATE_NAME_TODO';
+const CHANGE_ORDER_TODO_LIST = 'CHANGE_ORDER_TODO_LIST';
 
 let initialState = {
   todoList: [],
@@ -62,40 +63,49 @@ const todoReducer = (state = initialState, action) => {
       return { ...state, isFetching: action.isFetching };
     }
 
+    case CHANGE_ORDER_TODO_LIST: {
+      return { ...state, todoList: action.changedTodoList };
+    }
+
     default:
       return state;
   }
 };
 
-export const setTodos = (todos) => ({
+const setTodos = (todos) => ({
   type: SET_TODOS,
   todos,
 });
 
-export const toggleIsFetching = (isFetching) => ({
+const toggleIsFetching = (isFetching) => ({
   type: IS_FETCHING,
   isFetching,
 });
 
-export const addTodoSuccess = (newTodo) => ({
+const addTodoSuccess = (newTodo) => ({
   type: ADD_NEW_TODO,
   newTodo,
 });
 
-export const deleteTodoSuccess = (todoId) => ({
+const deleteTodoSuccess = (todoId) => ({
   type: DELETE_TODO,
   todoId,
 });
 
-export const changeCompletedSuccess = (todoId) => ({
+const changeCompletedSuccess = (todoId) => ({
   type: CHANGE_COMPLETED,
   todoId,
 });
 
-export const updateNameTodoSuccess = (todoId, newName) => ({
+const updateNameTodoSuccess = (todoId, newName) => ({
   type: UPDATE_NAME_TODO,
   todoId,
   newName,
+});
+
+const changeOrderTodoListSuccess = (changedTodoList) => ({
+  type: CHANGE_ORDER_TODO_LIST,
+  changedTodoList,
 });
 
 export const getTodos = () => {
@@ -108,11 +118,12 @@ export const getTodos = () => {
   };
 };
 
-export const addTodo = (newTodo) => {
+export const addTodo = (newTodo, length) => {
   let id = new Date().getTime();
+  let order = length + 1;
   return (dispatch) => {
-    todoAPI.addTodo({ name: newTodo, completed: false, id }).then(() => {
-      dispatch(addTodoSuccess({ name: newTodo, completed: false, id }));
+    todoAPI.addTodo({ name: newTodo, completed: false, id, order }).then(() => {
+      dispatch(addTodoSuccess({ name: newTodo, completed: false, id, order }));
     });
   };
 };
@@ -139,6 +150,32 @@ export const changeCompleted = (id, completed) => {
   return (dispatch) => {
     todoAPI.changeCompleted(String(id), completed).then(() => {
       dispatch(changeCompletedSuccess(id));
+    });
+  };
+};
+
+export const changeOrderTodoList = (whichObject, wereToMove, state) => {
+  whichObject > wereToMove
+    ? state.map((item) => {
+        if (item.order >= wereToMove && item.order < whichObject) {
+          item.order++;
+        } else if (item.order === whichObject) {
+          item.order = wereToMove;
+        }
+        return state;
+      })
+    : state.map((item) => {
+        if (item.order <= wereToMove && item.order > whichObject) {
+          item.order--;
+        } else if (item.order === whichObject) {
+          item.order = wereToMove;
+        }
+        return state;
+      });
+
+  return (dispatch) => {
+    todoAPI.changeOrder(state).then(() => {
+      dispatch(changeOrderTodoListSuccess(state));
     });
   };
 };

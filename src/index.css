@@ -83,6 +83,7 @@ code {
 .todo-item:hover {
   cursor: pointer;
   background: #2d2d2d;
+  cursor: grab;
 }
 
 .completed {
