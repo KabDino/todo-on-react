@@ -119,8 +119,7 @@ code {
   background: #257524;
 }
 
-.button-delete-todo,
-.button-update-todo {
+.button-delete-todo {
   padding: 0 5px;
   margin-left: 5px;
   transition: 0.1s;
@@ -128,10 +127,6 @@ code {
 
 .button-delete-todo:hover {
   color: #fa2e1b;
-}
-
-.button-update-todo:hover {
-  color: #185ac1;
 }
 
 .todoTitle {

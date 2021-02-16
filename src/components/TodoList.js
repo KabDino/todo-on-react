@@ -23,7 +23,7 @@ const TodoList = (props) => {
   }
 
   return (
-    <div>
+    <article>
       {props.isFetching ? <Preloader /> : null}
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="characters">
@@ -57,7 +57,7 @@ const TodoList = (props) => {
           )}
         </Droppable>
       </DragDropContext>
-    </div>
+    </article>
   );
 };
 

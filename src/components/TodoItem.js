@@ -12,10 +12,6 @@ const TodoItem = (props) => {
     setUpdatingTodo((updatingTodo = ''));
   };
 
-  let deleteChangeNameTodo = () => {
-    setUpdatingTodo((updatingTodo = ''));
-  };
-
   let changeCompleted = () => {
     props.changeCompleted(props.todoId, props.completed);
   };
@@ -25,7 +21,7 @@ const TodoItem = (props) => {
   };
 
   return (
-    <div
+    <section
       key={props.todoId}
       todo-id={props.todoId}
       className={
@@ -36,18 +32,15 @@ const TodoItem = (props) => {
         <input
           defaultValue={updatingTodo !== '' ? updatingTodo : props.name}
           onChange={changeTodoName}
-          onBlur={deleteChangeNameTodo}
+          onMouseOut={updateNameTodo}
           className="nameTodo"
         />
       </div>
 
-      <div onClick={updateNameTodo} className="button-update-todo">
-        &#x270E;
-      </div>
       <div onClick={deleteTodo} className="button-delete-todo">
         &#10006;
       </div>
-    </div>
+    </section>
   );
 };
 

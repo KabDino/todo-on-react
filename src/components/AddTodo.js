@@ -17,6 +17,7 @@ let AddTodo = (props) => {
   return (
     <div className="form-add-todo">
       <input
+        type="text"
         value={todo}
         onChange={changeTodoName}
         className="input-add-todo"
